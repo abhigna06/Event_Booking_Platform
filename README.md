@@ -8,11 +8,11 @@ User Registration: Create an account and login to your account.\
 Event Details: Get comprehensive information about each event, including date, time, venue.\
 Booking System: Effortlessly book your spot at any event with a simple and secure booking system.\
 User Dashboard: Manage your booked events, view upcoming schedules, and access event-related information.\
-Administrator Panel: For event organizers, an intuitive admin panel to manage and post new events and view bookings.\
+Administrator Panel: For event organizers, an intuitive admin panel to manage and post new events and view bookings.
 
 # Technologies Used
 Backend: Node.js, Express.js.\
 Frontend: HTML, CSS, Bootstrap, JavaScript (EJS for templating).\
-Database: MongoDB.\
+Database: MongoDB.
 
 
