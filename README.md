@@ -1,5 +1,7 @@
 # Event Booking Platform
-The purpose of the Event Booking Platform is to provide users with a centralized system for discovering, booking, and managing various events. The platform aims to simplify the event booking process for both attendees and organizers.
+The Event Booking Platform is a web application that allows users to discover and book events seamlessly. \
+The purpose of the Event Booking Platform is to provide users with a centralized system for discovering, booking, and managing various events.\
+The platform aims to simplify the event booking process for both attendees and organizers.\
 The system will include features for users to browse events, register accounts, book event tickets, and for administrators to manage events. It will focus on creating a seamless and intuitive user experience.
 
 # Key Features
