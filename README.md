@@ -11,6 +11,6 @@ User Dashboard: Manage your booked events, view upcoming schedules, and access e
 Administrator Panel: For event organizers, an intuitive admin panel to manage and post new events and view bookings.
 
 # Technologies Used
-Backend: Node.js, Express.js
-Frontend: HTML, CSS, Bootstrap, JavaScript (EJS for templating)
-Database: MongoDB
+Backend: Node.js, Express.js.
+Frontend: HTML, CSS, Bootstrap, JavaScript (EJS for templating).
+Database: MongoDB.
