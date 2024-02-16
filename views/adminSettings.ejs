@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .admin-name {
+            /* float: left; */
+            font-size: 20px;
+            font-weight: bold;
+            color: #333333;
+        }
+        .admin-email {
+            
+            font-size: 16px;
+            color: #666666;
+        }
+        .card-header {
+            background-color: #b4c2d0;
+            color: #263D4D;
+            
+        }
+    </style>
+</head>
+<body>
+
+<%- include('./partials/admin_navbar.ejs')%>
+<br>
+<br>
+
+<div class="container-fluid">
+    <div class="row">
+        
+        <%- include('./partials/admin_sidebar.ejs')%>
+        
+        <div class="container">
+            <br><br>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class=" card-header text-center" style="background-color: #b4c2d0;color: #263D4D;">
+                            <h4 class="mb-0">Account Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <p><strong> Username:  </strong><%=admin[0].admin_username%></p>
+                            <p><strong> Email:  </strong><%=admin[0].admin_email%></p>
+                            <p><strong> Phone number:  </strong><%=admin[0].phone_no%></p>
+                            
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br> 
+    
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header text-center" style="background-color: #b4c2d0;color: #263D4D;">
+                            <h4 class="mb-0">Change Password?</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="/admins/updateProfile/<%=admin[0]._id%>" method="post" id="form1">
+                                <p id="error-msg"></p>
+                                <!-- <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="name"  name="name" value="<%= admin[0].admin_username %>">
+                                </div> -->
+                                <input type="hidden" id="userId" value="<%= admin[0]._id %>">
+                               
+                                <div class="form-group">
+                                    <label for="currentPassword">Current Password</label>
+                                    <input type="password" class="form-control" name="currentPassword" id="currentPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">New Password</label>
+                                    <input type="password" class="form-control"  name="newPassword" id="newPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword">Confirm Password</label>
+                                    <input type="password" class="form-control"  name="confirmPassword"  id="confirmPassword" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block" style="background-color: #ff4a17;">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    
+        <!-- Bootstrap JS and dependencies -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+        <script src="/javascripts/jquery.min.js"></script>
+       
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+        <script>
+            $("#form1").submit(function (e) {
+              e.preventDefault();
+              let userId = $('#userId').val();
+              let data = $("#form1").serializeArray();
+              
+              $.ajax({
+                url: '/admins/updateProfile/' + userId,
+                method: 'post',
+                dataType: 'json',
+                data: data,
+                success: function (response) {
+                  console.log(response)
+          
+                  if (response.result == 'wrong-password') {
+                    var wrongPassword = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                            '</button>'+
+                          '</div>'
+                    $('#error-msg').html(wrongPassword)
+                  }
+                  else if (response.result == 'passwords-doesnot-match') {
+                    var userNotFound = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                            '</button>'+
+                          '</div>'
+                    $('#error-msg').html(userNotFound)
+                    
+                  }
+                  else if (response.result == 'success') {
+                    var successmsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                            '</button>'+
+                          '</div>'
+                    $('#pword').val('')
+                    $('#error-msg').html(successmsg)
+                  }
+                  
+                  else{
+          
+                  var message = ""; 
+          
+                  for(let i=0;i<response.alertError.length;i++){
+                    message = message+ '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.alertError[i]["msg"]+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                            '</button>'+
+                          '</div>'
+                  }
+                  $('#error-msg').html(message)
+                }
+              }
+              })
+            });
+        </script>
+    </body>
+    
+</html>
+    

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('./partials/userHeader.ejs')%> 
+  
+  <style>
+
+    body {
+      background-color: #f5f5f5;
+     position: relative;
+       
+    }   
+    
+    body::before {
+      content: "";
+      background-image: url("/images/event.jpeg")  ;
+      background-size:cover;
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: -1;
+    }
+   
+    .content {
+            
+            color: #333;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+  </style>
+</head>
+
+<body >
+  <div style="height: 200px;">
+  </div>
+
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+         
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+          <div class="card card-primary" style="border-radius: 15px;">
+            <div class="card-header" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+              
+              <h3 class="card-title">LOGIN DETAILS</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+
+            <form method="post" action="/users/validate" id="form1">
+              <div class="card-body">
+
+                <p id="error-msg"></p>
+
+                
+                <div class="form-group">
+                  <label for="exampleInputEmail1">EMAIL</label>
+                  <input type="email" class="form-control" id="email" placeholder="Enter email id" name="email">
+                </div>
+                <br>
+                <div class="form-group">
+                  <label for="exampleInputpassword">PASSWORD</label>
+                  <input type="password" class="form-control" id="pword" placeholder="Enter password" name="password">
+                </div>
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Login</button>
+                  <div class="d-flex justify-content-center">
+                    <p>Don't have an account? &ensp;</p>
+                    <a href="/users/register">Register</a>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  
+<!-- jQuery -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/javascripts/bootstrap.bundle.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="/javascripts/bs-custom-file-input.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/javascripts/adminlte.min.js"></script>
+
+<script>
+  $("#form1").submit(function (e) {
+    e.preventDefault();
+    let data = $("#form1").serializeArray();
+    
+    $.ajax({
+      url: '/users/validate',
+      method: 'post',
+      dataType: 'json',
+      data: data,
+      success: function (data) {
+        console.log(data)
+
+        if (data.result == 'redirect') {
+          window.location.href = data.url;
+        }
+        else if (data.result == 'user-not-found') {
+          var userNotFound = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                  '</button>'+
+                '</div>'
+          $('#error-msg').html(userNotFound)
+          
+        }
+        else if (data.result == 'password-wrong') {
+          var wrongPassword = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                  '</button>'+
+                '</div>'
+          $('#pword').val('')
+          $('#error-msg').html(wrongPassword)
+          
+        }
+        else{
+
+        var message = ""; 
+
+        for(let i=0;i<data.alertError.length;i++){
+          message = message+ '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data.alertError[i]["msg"]+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                  '</button>'+
+                '</div>'
+        }
+        $('#error-msg').html(message)
+      }
+    }
+    })
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('./partials/userHeader.ejs')%> 
+  <style>
+    .login-page-navigation {
+        font-size: medium;
+        float: right;
+        margin: 2% 7% 0% -3%;
+    }
+  </style>
+</head>
+<body style="background-color: #eee;">
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4">
+            <h1>Post Event&emsp;
+            <!-- <a class="login-page-navigation" href="/users/login">Already have an account?</a> -->
+            </h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <div class="card card-primary" style="border-radius: 15px;">
+              <div class="card-header" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                <h3 class="card-title">Event Details</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form action="/admins/newevent" method="post" enctype="multipart/form-data" id="form">
+                <div class="card-body"> 
+
+                  <div class="form-group">
+                    <label for="exampleInputEventName">EVENT NAME</label>
+                    <input type="text" class="form-control" id="event_name" placeholder="Enter event name" name="event_name">
+                  </div>
+                  <br> 
+                   
+                  LOCATION:
+                  <div class="form-group">
+                    <label for="exampleInputVenue">Venue</label>
+                    <input type="text" class="form-control" id="venue" placeholder="Enter venue" name="venue" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="exampleInputArea">Area</label>
+                    <input type="text" class="form-control" id="area" placeholder="Enter Area" name="area" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="exampleInputCity">City</label>
+                    <input type="text" class="form-control" id="city" placeholder="Enter City" name="city">
+                  </div>
+                  <br>
+
+
+                  <div class="form-group">
+                    <label for="exampleInputHost">HOST</label>
+                    <input type="text" class="form-control" id="host" placeholder="Enter host" name="host" required>
+                  </div>
+                  <br>
+                  
+                  <div class="form-group">
+                    <label for="exampleInputTime">TIME</label>
+                    <input type="text" class="form-control" id="time" placeholder="Enter Time" name="time" required>
+                  </div>
+                  <br>
+
+                  <div class="form-group">
+                    <label for="exampleInputDate">DATE</label>
+                    <input type="date" class="form-control" id="date" placeholder="Enter Date" name="date" required>
+                  </div>
+                  <br>
+
+                  <div class="form-group">
+                    <label for="exampleInputDesc">DESCRIPTION</label>
+                    <input type="text" class="form-control" id="description" placeholder="Enter description" name="description" required>
+                  </div>
+                  <br>
+
+                  <div class="form-group">
+                    <label for="exampleInputseats">NO OF TICKETS</label>
+                    <input type="number" class="form-control" id="no_of_tickets" placeholder="Enter description" name="no_of_tickets" required>
+                  </div>
+                  <br>
+
+                  <div class="form-group">
+                    <label for="exampleInputprice">PRICE OF EACH TICKET</label>
+                    <input type="number" class="form-control" id="ticketPrice" placeholder="Enter description" name="ticketPrice" required>
+                  </div>
+                  <br>
+
+                  
+
+                  <div class="form-group">
+                    <label for="exampleInputImage">UPLOAD IMAGE:</label><br>
+                    <input type="file" id="myFile" name="filename">
+                  </div>
+                  
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">POST</button>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </form>
+            </div>
+            </div>
+            </div>
+      </div><!-- /.container-fluid -->
+    </section>
+   
+
+<!-- jQuery -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/javascripts/bootstrap.bundle.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="/javascripts/bs-custom-file-input.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/javascripts/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/javascripts/demo.js"></script>
+<!-- Page specific script -->
+
+<!-- <script>
+$(function () {
+  bsCustomFileInput.init();
+}); -->
+</script>
+</body>
+</html>

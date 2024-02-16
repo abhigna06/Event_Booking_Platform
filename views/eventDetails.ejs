@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Event Booking</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+            padding: 30px; /* Increased padding */
+        }
+
+        .event-details {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .btn-book {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+
+        .btn-back {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        /* Hide confirmation message by default */
+        #confirmation-message {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="event-details">
+                <h2><%= event[0].event_name %></h2>
+                <img class="event-image" src="<%= event[0].eventImage %>" alt="Event Image">
+                <br>
+                <p><strong style="font-size: large;">About the event:</strong><br> <%= event[0].description %></p>
+                <p><strong style="font-size: large;">Host:</strong> <%= event[0].host %></p>
+                <p><strong style="font-size: large;">Date:</strong> <%= new Date(event[0].date).toLocaleDateString() %> </p>
+                <p><strong style="font-size: large;">Time:</strong> <%= event[0].time %></p>
+                <p><strong style="font-size: large;">Location:</strong> <%= event[0].event_location.venue%>, <%= event[0].event_location.area%>, <%= event[0].event_location.city%></p>
+                <p><strong style="font-size: large;">Available Tickets:</strong> <%= event[0].no_of_tickets%> </p>
+                <% if(event[0].ticketPrice>0){%>
+                <p><strong style="font-size: large;">Ticket Price:</strong> <%= event[0].ticketPrice%>  </p>
+                <%}%>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-book" data-toggle="modal" data-target="#bookingModal">
+                  Book Tickets
+                </button>
+                <a href="/users/user_home" class="btn btn-back">Back to Events</a>
+               
+                <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="bookingModalLabel">Book Tickets</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <form id="booking-form"  method="post">
+                            <div class="form-group">
+                                <label for="tickets">Number of Tickets:</label>
+                                <input type="number" class="form-control" id="no_of_tickets" name="no_of_tickets" min="1" required>
+                                <input type="hidden" id="eventId" value="<%= event[0]._id %>">
+                                <input type="hidden" id="ticketPrice" name="ticketPrice" value="<%= event[0].ticketPrice %>">
+                            </div>
+                        
+                     
+                      <div class="modal-footer">
+                        <p id="confirmation-message"></p>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" id="confirmBooking" class="btn btn-primary" name="confirmBooking">Confirm</button>
+                      </div>
+                      </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script src="/javascripts/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+     <script>
+      
+
+      $(document).ready(function(){
+        $('#booking-form').submit(function(e){
+          e.preventDefault();
+          
+          var tickets = $('#no_of_tickets').val();
+          var formData = $(this).serialize();
+          var eventId = $('#eventId').val();
+
+          $.ajax({
+            url:"/payment/createOrder",
+            type:"post",
+            data: { no_of_tickets: tickets },
+            success:function(res){
+              if(res.success){
+                var options = {
+                  "key": ""+res.key_id+"",
+                  "amount": ""+res.amount+"",
+                  "currency": "INR",
+                  "name": ""+res.product_name+"",
+                  "description": ""+res.description+"",
+                  "image": "https://dummyimage.com/600x400/000/fff",
+                  "order_id": ""+res.order_id+"",
+                // 	"handler": function (response){
+                // 		alert("Payment Succeeded");
+                // 		// window.open("/","_self")
+                // 	},
+                // 	"prefill": {
+                // 		"contact":""+res.contact+"",
+                // 		"name": ""+res.name+"",
+                // 		"email": ""+res.email+""
+                // 	},
+                // 	"notes" : {
+                // 		"description":""+res.description+""
+                // 	},
+                // 	"theme": {
+                // 		"color": "#2300a3"
+                // 	}
+                // };
+                // var razorpayObject = new Razorpay(options);
+                // razorpayObject.on('payment.failed', function (response){
+                // 		alert("Payment Failed");
+                // });
+                // razorpayObject.open();
+                "handler": function (response){
+                                          // Second AJAX request to update the database after payment success
+                                          $.ajax({
+                                              url: "/users/bookTickets/" + eventId,
+                                              type: "post",
+                                              data: { no_of_tickets: tickets },
+                                              success: function(response) {
+                                                  if (response.result =='success') {
+                                                      //alert("Payment Succeeded");
+                                                      var successmsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.message+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                                                    '</button>'+'</div>'
+                                                    
+                                                      $('#confirmation-message').html(successmsg);
+                                                      $('#confirmation-message').show(); 
+                                                      //window.location.href = "/users/bookTickets/" + eventId;
+                                                      //window.location.reload();
+                                                  } else {
+                                                      alert("Failed to update database.");
+                                                  }
+                                              },
+                                              error: function(xhr, status, error) {
+                                                  console.error(error);
+                                                  alert("Error occurred while updating database. Please try again.");
+                                              }
+                                          });
+                                          $('#bookingModal').on('hidden.bs.modal', function (e) {
+                                            window.location.reload();
+                                          });
+                                      },
+                                      // Other options for Razorpay handler
+                                  };
+                                  var razorpayObject = new Razorpay(options);
+                                  razorpayObject.open();
+                
+              }
+              else{
+                alert(res.msg);
+              }
+            }
+          })
+
+        });
+});
+
+
+</script>
+
+  
+
+</body>
+</html>

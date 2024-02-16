@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Event Booking Platform</title>
+    <!-- Bootstrap CSS -->
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"> -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <!-- <link href="/assets/css/style.css" rel="stylesheet"> -->
+
+    <style>
+        --------------------------------------------------------------*/
+        #header {
+            transition: all 0.5s;
+            z-index: 997;
+            padding: 20px 0;
+        }
+
+        
+        body {
+            font-family: "Open Sans", sans-serif;
+            color: #444444;
+            background-color: #f0f4f8;
+            font-size: medium;
+        }
+
+        a {
+            color: #ff4a17;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ff724a;
+            text-decoration: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+           font-family: "Raleway", sans-serif;
+        }
+
+        .navbar1 {
+            background: #121d24;
+            padding: 0 0 30px 0;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .logo {
+            font-size: 30px;
+            
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+         .btn-get-started {
+            color: #ff4a17;
+            font-family: "Open Sans", sans-serif;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 14px;
+            display: inline-block;
+            padding: 10px 35px 10px 35px;
+            border-radius: 4px;
+            transition: 0.5s;
+            color: #fff;
+            background: #ff4a17;
+            border: 2px solid #ff4a17;
+        }
+
+        .btn-get-started:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+      
+/* 
+        .navbar {
+            background-color: #007bff;
+        } */
+
+        
+
+        .jumbotron {
+            /*background-image: url('event-image.jpg'); /* Replace with your event image */
+            background-size: cover;
+            color: #ffffff;
+            text-align: center;
+            padding: 100px 20px;
+            margin-bottom: 0;
+        }
+
+        .event-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .event-description {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+
+        .card-img-top {
+            max-height: 300px;
+            
+            padding: 2%;
+            border: 2%;
+            padding-bottom:5px;
+            object-fit: cover;
+            height:250px;
+            width:200px;
+        } 
+
+        .card {
+            background-color: #ffffff;
+            margin-bottom: 30px;
+            height: 600px;
+        }
+
+        .cardBody {
+            height: 120px;
+            overflow: hidden;
+        }
+        
+        .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        float: left;
+        min-width: 10rem;
+        padding: 0.5rem 0;
+        margin: 0.125rem 0 0;
+        font-size: 1rem;
+        color: #212529;
+        text-align: left;
+        list-style: none;
+        background-color: #ffffff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 0.25rem;
+    }
+
+    .dropdown-link {
+        display: block;
+        width: 100%;
+        padding: 0.25rem 1.5rem;
+        clear: both;
+        font-weight: 400;
+        color: #212529;
+        text-align: inherit;
+        white-space: nowrap;
+        background-color: transparent;
+        border: 0;
+        text-decoration: none;
+    }
+
+    .dropdown-link:hover {
+        background-color: #f8f9fa;
+    }
+
+    .list-group-item {
+        font-size: 16px;
+    }
+
+    input[type="date"]:not(.has-value):before{
+        color: black;
+        content: attr(placeholder);
+    }
+
+    
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar1 py-3 fixed-top" id="header">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <h1 class="logo" >EventEase</h1>
+            
+            
+            <form class="d-flex justify-content-center"  id="searchForm">
+                <input id="searchInput" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchTerm" style="width: 200%;">
+                <button class="btn btn-outline-success" id="searchBtn" type="button" style="background-color: #5c8eb0; color: #fff; ">Search</button>
+            </form>
+
+            <!-- Dropdown for selecting cities -->
+            <div class="dropdown">
+                <button class="btn btn-secondary  dropdown-toggle" type="button" id="cityDropdown" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false"  style="background-color: #5c8eb0;">
+                    Select City
+                </button>
+                <div class="dropdown-menu" aria-labelledby="cityDropdown">
+                    <% cities.forEach(city => { %>
+                        <a href="/users/user_home/<%= city %>" class="dropdown-link" data-city="<%= city %>"><%= city %></a>
+                    <% }); %>
+                    
+                </div>
+            </div>
+
+    
+            <div class="d-flex align-items-center">
+               
+                <i class='fa fa-user-circle' style="font-size:40px;cursor: pointer; margin-right: 10px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    
+                </i>
+
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-header">
+                        <h4 class="offcanvas-title" id="offcanvasRightLabel" style="font-family: Poppins, sans-serif; color: #263D4D;"> <b>Hey! <%= user[0].name %> </b></h4>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="list-group">
+                            <li class="list-group-item" onclick="window.location.href='/users/settings/<%= user[0]._id%>'">Settings</li>
+                            <hr class="my-1 border-light">
+                            <li class="list-group-item" onclick='window.location.href="/users/myBookings/<%= user[0]._id%>"'>My Bookings</li>
+                            <hr class="my-1 border-light">
+                            <li class="list-group-item" onclick='window.location.href="/users/logout"'>Logout</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </nav>
+
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="container mt-3">
+        
+        <!-- <div class="btn-group" role="group">
+            <button id="todayFilter" class="btn btn-outline-secondary date-filter-btn">Today</button>
+            <button id="tomorrowFilter" class="btn btn-outline-secondary date-filter-btn">Tomorrow</button>
+            <button id="weekendFilter" class="btn btn-outline-secondary date-filter-btn">This Weekend</button>
+        </div> -->
+        <div class="input-group mb-3">
+            <input type="date" class="form-control" id="startDate" min="<%=new Date()%>" placeholder="From : ">
+            <input type="date" class="form-control" id="endDate" placeholder="To : " >
+            <button class="btn btn-outline-secondary" id="searchByDateRangeBtn" type="button">Search</button>
+        </div>
+
+        <!-- Date range picker -->
+        <!-- <div id="dateRangePickerContainer" class="date-range-picker-container input-group mt-3">
+            <input type="text" class="form-control" id="dateRangePicker" placeholder="Select date range">
+            <button class="btn btn-outline-secondary" id="clearDateRangeBtn">Clear</button>
+        </div> -->
+
+        <br>
+        <br>
+
+        <div class="container" style="font-family: Poppins, sans-serif; color: #263D4D;"><h3><b> Explore Events </b></h3><br>
+            <div class="container d-flex justify-content-between flex-wrap" id="eventsContainer">
+                <% for (let i = 0; i < events.length; i++) { %>
+                    <div class="card mb-3" style="width: 18rem; background-color: #ffffff;">
+                        <% if (events[i].eventImage) { %>
+                            
+                                <img src="<%= events[i].eventImage %>" class="card-img-top" alt="Event Image">
+                            
+                        <% } %>
+                        <div class="card-body cardBody">
+                            <h5 class="card-title"><b><%= events[i].event_name %></b></h5>
+                            <a href="/users/eventDetails/<%= events[i]._id %>" class="btn .btn-get-started btn-primary"  style="color: #fff;background: #ff4a17; border: 2px solid #ff4a17;">Book</a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+        // $(document).ready(function () {
+        //    $('.dropdown-link').on('click', function () {
+        //     var selectedCity = $(this).data('city');
+        //     $('#cityDropdown').text(selectedCity);
+        // });
+        // });
+        const today = new Date();
+
+        // Format the date to YYYY-MM-DD
+        const year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        month = month < 10 ? '0' + month : month; // Add leading zero if needed
+        let day = today.getDate();
+        day = day < 10 ? '0' + day : day; // Add leading zero if needed
+        const currentDate = `${year}-${month}-${day}`;
+
+        // Set the min attribute of the date input field to today's date
+        document.getElementById('startDate').min = currentDate;
+        document.getElementById('endDate').min = currentDate;
+
+        document.getElementById('searchInput').addEventListener('input', async function() {
+            try {
+                const searchTerm = this.value.trim();
+                if (searchTerm !== '') {
+                    // Send AJAX request to searchEvents route
+                    const response = await fetch(`/users/searchEvents?searchTerm=${searchTerm}`);
+                    const events = await response.json();
+                    // Update events container with search results
+                    updateEventsContainer(events);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+        document.getElementById('searchBtn').addEventListener('click', async function(event) {
+        event.preventDefault();
+        try {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            if (searchTerm !== '') {
+                // Send AJAX request to searchEvents route
+                const response = await fetch(`/users/searchEvents?searchTerm=${searchTerm}`);
+                const events = await response.json();
+                // Update events container with search results
+                updateEventsContainer(events);
+                console.log(events);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+        });
+         
+       
+       
+
+        document.getElementById('searchByDateRangeBtn').addEventListener('click', async function(event) {
+            event.preventDefault();
+            try {
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                if (startDate && endDate) {
+                    // Send AJAX request to filterEventsByDateRange route with start and end dates
+                    const response = await fetch(`/users/filterEventsByDate?startDate=${startDate}&endDate=${endDate}`);
+                    const events = await response.json();
+                    updateEventsContainer(events);
+                } else {
+                    alert('Please select both start and end dates.');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+
+        function updateEventsContainer(events) {
+            const eventsContainer = document.getElementById('eventsContainer');
+            eventsContainer.innerHTML = ''; // Clear previous events
+            if(events.length === 0){
+                eventsContainer.innerHTML = `No events to be displayed`;
+            }
+            else{
+            events.forEach(event => {
+                const card = `
+                    <div class="card mb-3" style="width: 18rem; background-color: #ffffff;">
+                        <img src="${ event.eventImage
+                         }" class="card-img-top" alt="Event Image">
+                            
+                        <div class="card-body cardBody">
+                            <h5 class="card-title"><b>${event.event_name}</b></h5>
+                            <a href="/users/eventDetails/${event._id}" class="btn .btn-get-started btn-primary"  style="color: #fff;background: #ff4a17; border: 2px solid #ff4a17;">Book</a>
+                        </div>
+                    </div>`;
+                eventsContainer.innerHTML += card;
+            });
+            }    
+        }
+        
+      
+        
+
+        
+    </script>
+
+    
+  
+
+</body>
+
+</html>

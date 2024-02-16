@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        } */
+
+        #sidebar {
+            background-color: #343a40;
+            color: #ffffff;
+            height: 100vh;
+            padding-top: 20px;
+        }
+
+        #content {
+            padding: 20px;
+        }
+
+        /* .navbar {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .navbar-brand {
+            color: #ffffff;
+        }
+
+        .nav-link {
+            color: #ffffff;
+        } */
+
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #f0f4f8;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+
+<%- include('./partials/admin_navbar.ejs')%>
+<br>
+<br>
+
+
+<div class="container-fluid">
+    <div class="row">
+        
+        <%- include('./partials/admin_sidebar.ejs')%>
+        
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="content">
+            <br>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Admin Dashboard</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4" >
+                    <div class="card">
+                        <div class="card-header" style="background-color: #b4c2d0; color: #263D4D; font-size: 18px;">
+                           <b>Total Events</b> 
+                        </div>
+                        <div class="card-body" >
+                            <h5 class="card-title"><%= admin[0].eventsPosted.length %></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header" style="background-color: #b4c2d0; color: #263D4D; font-size: 18px;">
+                            <b>Total Bookings</b>
+                        </div>
+                        <div class="card-body">
+                            <% let bookings=0 %>
+                            <% for(let i=0;i<events.length; i++){%>
+                                <% bookings+=events[i].ticketsSold %>
+                            <%}%>
+                            <h5 class="card-title"><%= bookings %> </h5>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <% if(admin[0].admin_username === "abhigna1") {%>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header" style="background-color: #b4c2d0; color: #263D4D; font-size: 18px;">
+                                <b>Active Admins</b>
+                            </div>
+                            <div class="card-body" >
+                                <h5 class="card-title"><%= allAdmins.length %></h5>
+                            </div>
+                        </div>
+                    </div>
+                <%}%>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+

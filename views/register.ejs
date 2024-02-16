@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('./partials/userHeader.ejs')%> 
+  <style>
+    .login-page-navigation {
+        font-size: medium;
+        float: right;
+        margin: 2% 7% 0% -3%;
+    }
+    body {
+      background-color: #f5f5f5;
+     position: relative;
+       
+    }   
+    
+    body::before {
+      content: "";
+      background-image: url("/images/event.jpeg")  ;
+      background-size:cover;
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: -1;
+    }
+   
+    .content {
+            
+            color: #333;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+  </style>
+</head>
+<div  style="height: 100px;"></div>
+<body style="background-color: #eee;">
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4">
+            
+            </h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <div class="card card-primary" style="border-radius: 15px;">
+              <div class="card-header" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                <h3 class="card-title">REGISTRATION DETAILS</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form method="post" action="/users/newuser" id="form1">
+                <div class="card-body">
+
+                  <p id="error-msg"></p>
+
+                  
+                   
+                  <div class="form-group">
+                    <label for="exampleInputname">NAME</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter User Name" name="name" required>
+                  </div>
+                  <br>
+
+                  <div class="form-group">
+                    <label for="exampleInputemail">EMAIL</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter Email address" name="email" required>
+                  </div>
+                  <br>
+
+                  
+
+
+                  <div class="form-group">
+                    <label for="exampleInputpassword">PASSWORD</label>
+                    <input type="password" class="form-control" id="pword" placeholder="Enter password" name="password" required>
+                  </div>
+                  <br>
+                  
+                  <div class="form-group">
+                    <label for="exampleInputpassword">CONFIRM PASSWORD</label>
+                    <input type="password" class="form-control" id="pword1" placeholder="Enter password" name="password1" required>
+                  </div>
+                  
+              
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Register</button>
+                  <div class="d-flex justify-content-center">
+                    <p>Already have an account? &ensp;</p>
+                    <a href="/users/login">Login</a>
+                  </div>
+                </div>
+              </div>
+                <!-- /.card-body -->
+              </form>
+            </div>
+            </div>
+            </div>
+      </div><!-- /.container-fluid -->
+    </section>
+   
+
+<!-- jQuery -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/javascripts/bootstrap.bundle.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="/javascripts/bs-custom-file-input.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/javascripts/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/javascripts/demo.js"></script>
+<!-- Page specific script -->
+
+<!-- <script>
+$(function () {
+  bsCustomFileInput.init();
+}); -->
+ <script>
+  $("#form1").submit(function (e) {
+    e.preventDefault();
+    let data = $("#form1").serializeArray();
+
+    $.ajax({
+      url: '/users/newuser',
+      method: 'post',
+      dataType: 'json',
+      data: data,
+      success: function (data) {
+        console.log(data);
+
+        if (data.result === 'redirect') {
+          window.location.href = data.url;
+        } 
+        else if(data.result == 'existing user') {
+          var existing = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                  '</button>'+
+                '</div>'
+          $('#error-msg').html(existing);  
+        }
+        else if(data.result == 'passwords doesnot match') {
+          var passwordError = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                  '</button>'+
+                '</div>'
+          $('#error-msg').html(passwordError);  
+        }
+        
+      },
+      error: function (error) {
+        console.error('Error:', error);
+      }
+    });
+  });
+</script> 
+
+ 
+
+
+
+
+
+</body>
+</html>

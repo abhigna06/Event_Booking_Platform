@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Event Booking Platform</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"> -->
+
+    <style>
+
+#header {
+            transition: all 0.5s;
+            z-index: 997;
+            padding: 20px 0;
+        }
+
+        
+        body {
+            font-family: "Open Sans", sans-serif;
+            color: #444444;
+            background-color: #f0f4f8;
+            font-size: medium;
+        }
+
+        a {
+            color: #ff4a17;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ff724a;
+            text-decoration: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+           font-family: "Raleway", sans-serif;
+        }
+
+        .navbar1 {
+            background: #121d24;
+            padding: 0 0 30px 0;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .logo {
+            font-size: 30px;
+            
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+/* 
+        .navbar {
+            background-color: #007bff;
+        } */
+
+        .btn-primary {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-primary:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar1 py-3 fixed-top" id="header">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <h1 class="logo" >EventEase</h1>
+    
+            <form class="d-flex justify-content-center" role="search">
+                <input id="searchInput" class="form-control me-2" type="hidden" placeholder="Search" aria-label="Search" style="width: 200%;">
+                <!-- <button class="btn btn-outline-success" type="hidden" style="background-color: #5c8eb0; color: #fff;">Search</button> -->
+            </form>
+    
+            
+            <div class="d-flex align-items-center">
+                <a  class="btn btn-primary" href="/users/user_home" style="background-color: #5c8eb0;">Back to Home</a>
+                   
+            </div>
+
+        </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4 class="mb-0">Account Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <p><strong> Name:  </strong><%=user[0].name%></p>
+                        <p><strong> Email:  </strong><%=user[0].email%></p>
+                        
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <br> 
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4 class="mb-0">Update Profile?</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="/users/updateProfile/<%=user[0]._id%>" method="post" id="form1">
+                            <p id="error-msg"></p>
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name"  name="name" value="<%= user[0].name %>">
+                            </div>
+                            <input type="hidden" id="userId" value="<%= user[0]._id %>">
+                           
+                            <div class="form-group">
+                                <label for="currentPassword">Current Password</label>
+                                <input type="password" class="form-control" name="currentPassword" id="currentPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" class="form-control"  name="newPassword" id="newPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <input type="password" class="form-control"  name="confirmPassword"  id="confirmPassword">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block" style="color: #fff;background: #ff4a17; border: 2px solid #ff4a17;">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="/javascripts/jquery.min.js"></script>
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        $("#form1").submit(function (e) {
+          e.preventDefault();
+          let userId = $('#userId').val();
+          let data = $("#form1").serializeArray();
+          
+          $.ajax({
+            url: '/users/updateProfile/' + userId,
+            method: 'post',
+            dataType: 'json',
+            data: data,
+            success: function (response) {
+              console.log(response)
+      
+              if (response.result == 'wrong-password') {
+                var wrongPassword = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                        '</button>'+
+                      '</div>'
+                $('#error-msg').html(wrongPassword)
+              }
+              else if (response.result == 'passwords-doesnot-match') {
+                var userNotFound = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                        '</button>'+
+                      '</div>'
+                $('#error-msg').html(userNotFound)
+                
+              }
+              else if (response.result == 'success') {
+                var successmsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                        '</button>'+
+                      '</div>'
+                $('#pword').val('')
+                $('#error-msg').html(successmsg)
+              }
+              
+            //   else{
+      
+            //   var message = ""; 
+      
+            //   for(let i=0;i<response.alertError.length;i++){
+            //     message = message+ '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.alertError[i]["msg"]+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+            //             '</button>'+
+            //           '</div>'
+            //   }
+            //   $('#error-msg').html(message)
+            // }
+          }
+          })
+        });
+      </script>
+</body>
+
+</html>

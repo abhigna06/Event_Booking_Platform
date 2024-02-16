@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- <%- include('./partials/userHeader.ejs')%>  -->
+  <style>
+    .login-page-navigation {
+        font-size: medium;
+        float: right;
+        margin: 2% 7% 0% -3%;
+    }
+  </style>
+</head>
+<body style="background-color: #eee;">
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4">
+            <h1>Add Admin&emsp;            
+            </h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <div class="card card-primary" style="border-radius: 15px;">
+              <div class="card-header" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                <h3 class="card-title">New Admin Details</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form method="post" action="/admins/sendCredentials" id="form1">
+                <div class="card-body"> 
+                  <div class="form-group">
+                    <label for="exampleInputname">ADMIN NAME</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter User Name" name="name" required>
+                  </div>
+                  <br>
+
+                  <div class="form-group">
+                    <label for="exampleInputemail">ADMIN EMAIL</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter Email address" name="email" required>
+                  </div>
+                  <br>
+
+
+                  <div class="form-group">
+                    <label for="exampleInputphno">PHONE NO</label>
+                    <input type="tel"  class="form-control" name="phno"  id="phno" pattern="[0-9]{10}" placeholder="Enter Mobile Number" required/> 
+                  </div>
+                  <br>
+                  
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Add as Admin</button>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </form>
+            </div>
+            </div>
+            </div>
+      </div><!-- /.container-fluid -->
+    </section>
+   
+
+<!-- jQuery -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/javascripts/bootstrap.bundle.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="/javascripts/bs-custom-file-input.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/javascripts/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/javascripts/demo.js"></script>
+<!-- Page specific script -->
+
+<!-- <script>
+$(function () {
+  bsCustomFileInput.init();
+}); 
+</script> -->
+
+
+
+</body>
+</html>

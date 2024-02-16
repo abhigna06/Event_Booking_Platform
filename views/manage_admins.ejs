@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .admin-name {
+            /* float: left; */
+            font-size: 20px;
+            font-weight: bold;
+            color: #333333;
+        }
+        .admin-email {
+            
+            font-size: 16px;
+            color: #666666;
+        }
+    </style>
+</head>
+<body>
+
+<%- include('./partials/admin_navbar.ejs')%>
+<br>
+<br>
+
+<div class="container-fluid">
+    <div class="row">
+        
+        <%- include('./partials/admin_sidebar.ejs')%>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="content">
+            <br>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Active Admins</h1>
+            </div>
+            <% if (allAdmins.length > 0) { %>
+                <% for(let i=0; i < allAdmins.length; i++){ %>
+                    <div class="card">
+                        <% if(allAdmins[i].admin_username !== "abhigna1") {%>
+                        <div class="card-body">
+                            
+                            <h6 class="admin-name"><%= allAdmins[i].admin_username %></h5>
+                            <p class="admin-email"><%= allAdmins[i].admin_email %> %></p> 
+                            <a href="/admins/delete/<%= allAdmins[i]._id %>"  > Delete Admin</a> 
+                                                          
+                        </div>
+                        <%}%>
+                       
+                    </div>
+                <% } %>
+            <% } else { %>
+                <p>You did not post any events yet.</p>
+            <% } %>
+            
+
+        </main>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        #header {
+            transition: all 0.5s;
+            z-index: 997;
+            padding: 20px 0;
+        }
+
+        
+        body {
+            font-family: "Open Sans", sans-serif;
+            color: #444444;
+            background-color: #f0f4f8;
+            font-size: medium;
+        }
+
+        a {
+            color: #ff4a17;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ff724a;
+            text-decoration: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+           font-family: "Raleway", sans-serif;
+        }
+
+        .navbar1 {
+            background: #121d24;
+            padding: 0 0 30px 0;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .logo {
+            font-size: 30px;
+            
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            /* padding-top: 50px; */
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .booking-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(45, 40, 40, 0.1);
+            
+            
+        }
+        .booking-details {
+            margin-bottom: 10px;
+        }
+        .event-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333333;
+        }
+        .event-location {
+            font-size: 16px;
+            color: #666666;
+        }
+        .event-date {
+            font-size: 14px;
+            color: #999999;
+        }
+        .category-selector {
+        position: relative;
+        margin-top: 20px;
+    }
+
+    .category-slider {
+        position: absolute;
+        top: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #000;
+        transition: transform 0.3s ease;
+    }
+
+    .category-link {
+        padding: 10px 20px;
+        margin-right: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        border: none;
+        background: transparent;
+    }
+
+    .category-link.active {
+        color: #dc3545;
+    }
+
+    #upcomingBtn.active ~ .category-slider {
+        transform: translateX(0);
+    }
+
+    #completedBtn.active ~ .category-slider {
+        transform: translateX(100%);
+    }
+
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+ 
+</head>
+<body>
+ 
+    <div>
+ 
+    <nav class="navbar navbar1 py-3 fixed-top" id="header">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <h1 class="logo" >EventEase</h1>
+    
+            <form class="d-flex justify-content-center" role="search">
+                <input id="searchInput" class="form-control me-2" type="hidden" placeholder="Search" aria-label="Search" style="width: 200%;">
+                <!-- <button class="btn btn-outline-success" type="hidden" style="background-color: #5c8eb0; color: #fff;">Search</button> -->
+            </form>
+    
+            
+            <div class="d-flex align-items-center">
+            <a  class="btn btn-primary" href="/users/user_home" style="background-color: #5c8eb0;">Back to Home</a>
+                   
+        </div>
+
+        </div>
+    </nav>
+    </div>
+ <br><br><br>
+ 
+<div class="container">
+    
+    <h1 class="mt-4 mb-4">My Bookings</h1>
+    <div class="category-selector">
+        <div class="category-slider"></div>
+        <button type="button" class="category-link " id="upcomingBtn">Upcoming Bookings</button>
+        <button type="button" class="category-link" id="completedBtn">Completed Bookings</button>
+    </div>
+    <p id="confirmation-message"></p>
+
+    <% if (user[0].bookings.length > 0) { %>
+        <% for(let i=0; i < user[0].bookings.length; i++){ %>
+            <% const booking = user[0].bookings[i]; %>
+            <% const event = booking.eventId; %>
+            <% if ( event.completed === true) { %>
+                <div class="booking-card completed" data-event-id="<%= event._id %>" >
+            <% } else { %>
+                <div class="booking-card upcoming" data-event-id="<%= event._id %>">
+            <% } %>
+                <div class="row">     
+                    <div class="col-md-9">
+                        <div class="booking-details">
+                            
+                            <div class="event-name"><%= event.event_name %></div>
+                            <div class="event-location"><%= event.event_location.venue %>, <%= event.event_location.area %>, <%= event.event_location.city %></div>
+                            <div class="event-date"><%= new Date(event.date).toLocaleDateString() %> at <%= event.time %></div>
+                            <div class="tickets-booked"><%= booking.ticketsCount %>  ticket(s)</div>
+                            <input type="hidden" class="event-id"  value="<%= event._id %>">
+
+                        </div>
+                    </div>
+                    <% if (!event.completed) { %>
+                        
+                        <div class="col-md-3">
+                            <br>
+                            <button class="btn btn-danger cancel-booking-btn" >Cancel Booking</button>
+                            <!-- <p id="confirmation-message"></p> -->
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        
+        <% } %>
+    <% } else { %>
+        <p>You have no bookings yet.</p>
+    <% } %>
+</div>
+
+
+
+
+  
+
+<script src="/javascripts/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ 
+ 
+<script>
+    
+
+    $(document).ready(function () {
+        // Function to toggle visibility based on selected category
+        $('.category-link').on('click', function() {
+            $('.booking-card').hide(); // Hide all booking cards
+            const category = $(this).attr('id') === 'upcomingBtn' ? 'upcoming' : 'completed';
+            
+            $(`.${category}`).show(); // Show booking cards based on selected category
+            $('.category-link').removeClass('active'); // Remove active class from all category links
+            $(this).addClass('active'); // Add active class to the selected category link
+        });
+
+
+        $('.cancel-booking-btn').on('click', function() {
+            // Get the eventId from the hidden input field
+            var bookingCard = $(this).closest('.booking-card');
+            var eventId = bookingCard.find('.event-id').val();
+            //var eventId = $('#eventId').val();
+            
+            // Make an AJAX request to cancel the booking
+            $.ajax({
+                method: 'post',
+                url: `/users/cancelBooking/${eventId}`,
+                success: function(response) {
+                    if (response.result == 'success') {
+
+                        var successmsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.message+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                        '</button>'+'</div>'
+                        
+                        $('#confirmation-message').html(successmsg);
+                        $('#confirmation-message').show();     
+                    } 
+                    else {
+
+                        var failuremsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.message+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                        '</button>'+'</div>'
+
+                        $('#confirmation-message').html(failuremsg);
+                        $('#confirmation-message').show();
+                    }
+
+                    setTimeout(function(){
+                        location.reload();
+                    }, 2000);
+                },
+                error: function(xhr, status, error) {
+                    // Handle error
+                    console.error(error);
+                    //alert('Error cancelling booking. Please try again later.');
+                },
+
+                
+            });
+        });
+    });
+
+
+
+</script>
+
+ 
+ 
+</body>
+</html>
