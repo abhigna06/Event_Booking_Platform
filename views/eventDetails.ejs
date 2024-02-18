@@ -83,7 +83,7 @@
                           <form id="booking-form"  method="post">
                             <div class="form-group">
                                 <label for="tickets">Number of Tickets:</label>
-                                <input type="number" class="form-control" id="no_of_tickets" name="no_of_tickets" min="1" required>
+                                <input type="number" class="form-control" id="no_of_tickets" name="no_of_tickets" min="1" max="<%= event[0].no_of_tickets %>"  required>
                                 <input type="hidden" id="eventId" value="<%= event[0]._id %>">
                                 <input type="hidden" id="ticketPrice" name="ticketPrice" value="<%= event[0].ticketPrice %>">
                             </div>
