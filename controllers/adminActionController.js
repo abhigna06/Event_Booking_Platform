@@ -3,8 +3,9 @@ var router = express.Router();
 var bcrypt = require('bcryptjs');
 var Admin = require('../models/Admin')
 var Event = require('../models/Event')
+const Chart = require('chart.js/auto');
 
-const { deleteFile,
+const { 
     uploadFileToS3 } = require('../services/uploadToS3');
 
 const path = require('path')
@@ -35,7 +36,16 @@ async function adminDashboard (req, res, next) {
       const admin = await Admin.find({ admin_username: admin_username });
       ///  console.log(admin);
       const events = await Event.find({ postedBy: admin[0]._id });
-      res.render('admin_dashboard', { title: 'Events', events: events, admin: admin, allAdmins });
+
+      const ticketSalesData = await Event.aggregate([
+        { $match: { postedBy: admin[0]._id } }, // Match events posted by the admin
+        { $group: { _id: '$event_name', totalTicketsSold: { $sum: '$ticketsSold' } } } // Group by event name and calculate total ticket sales
+      ]);
+
+      const eventNames = ticketSalesData.map(data => data._id); // Array of event names
+      const ticketSales = ticketSalesData.map(data => data.totalTicketsSold);
+
+      res.render('admin_dashboard', { title: 'Events', events: events, admin: admin, allAdmins, eventNames, ticketSales });
     }
     catch (e) {
       console.log(e)
@@ -88,9 +98,17 @@ async function newEvent(req, res, next) {
         return res.status(500).json({ message: 'Unexpected Error Occurred' });
       }
       const events = await Event.find({ postedBy: adminId });
+      const ticketSalesData = await Event.aggregate([
+        { $match: { postedBy: admin[0]._id } }, // Match events posted by the admin
+        { $group: { _id: '$event_name', totalTicketsSold: { $sum: '$ticketsSold' } } } // Group by event name and calculate total ticket sales
+      ]);
+
+      const eventNames = ticketSalesData.map(data => data._id); // Array of event names
+      const ticketSales = ticketSalesData.map(data => data.totalTicketsSold);
+
       // Respond with JSON for API requests
       // res.status(201).json({ user: savedUser });
-      res.render('admin_dashboard', { admin: admin, events, allAdmins  });
+      res.render('admin_dashboard', { admin: admin, events, allAdmins, eventNames, ticketSales  });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Unexpected Error Occurred' });
@@ -171,4 +189,35 @@ async function updateProfile(req, res, next) {
   
 }
 
-module.exports = {adminDashboard, postEvent, newEvent, adminEvents, settings, updateProfile}
+async function cityChart (req, res, next){
+
+  const admin_username = req.user.username;
+  const admin = await Admin.find({ admin_username: admin_username });
+
+  // Define an aggregation pipeline
+  const pipeline = [
+      {
+          $group: {
+              _id: '$event_location.city',
+              totalEvents: { $sum: 1 }
+          }
+      }
+  ];
+
+  // Execute the aggregation pipeline
+  Event.aggregate(pipeline)
+      .then(results => {
+          // Process the aggregated data for visualization
+          const labels = results.map(item => item._id);
+          const data = results.map(item => item.totalEvents);
+
+          // Render the dashboard page with the aggregated data
+          res.render('adminCityChart', { labels, data, admin });
+      })
+      .catch(error => {
+          console.error('Error fetching aggregated data:', error);
+          res.status(500).send('Internal Server Error');
+      });
+}
+
+module.exports = {adminDashboard, postEvent, newEvent, adminEvents, settings, updateProfile, cityChart}

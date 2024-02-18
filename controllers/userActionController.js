@@ -182,23 +182,24 @@ async function cancelBooking(req, res, next) {
       const user_email = req.user.email;
       console.log(user_email);
       const user = await User.find({ email : user_email});
-      const eventId = req.params.eventId;
+      const bookingId = req.params.eventId;
       
-      const booking = user[0].bookings.find(booking => booking.eventId.toString() === eventId);
+      const booking = user[0].bookings.find(booking => booking._id.toString() === bookingId);
       console.log(booking);
+      const eventId = booking.eventId;
       if (!booking) {
           return res.status(404).json({ message: 'Booking not found' });
       }
-  
+    
       // Update the no_of_tickets and ticketsSold in the corresponding event
-      const event = await Event.findById(eventId);
-      event.no_of_tickets += booking.ticketsCount;
-      event.ticketsSold -= booking.ticketsCount;
-      await event.save();
+      const event = await Event.find({_id:eventId});
+      event[0].no_of_tickets += booking.ticketsCount;
+      event[0].ticketsSold -= booking.ticketsCount;
+      await event[0].save();
       console.log(event);
   
       // Remove the booking from the user's bookings array
-      user[0].bookings = user[0].bookings.filter(booking => booking.eventId.toString() !== eventId);
+      user[0].bookings = user[0].bookings.filter(booking => booking._id.toString() !== bookingId);
       await user[0].save();
   
       res.json({ result:'success' , message:'Booking Cancelled Successfully' });

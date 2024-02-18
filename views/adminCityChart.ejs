@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<%- include('./partials/admin_navbar.ejs')%>
+<%- include('./partials/admin_sidebar.ejs')%>
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="content" style="width: 80%; height: 80%;">
+    <br><br>
+    <br><br>
+<input type="hidden" id="labels" value="<%= JSON.stringify(labels) %>">
+<input type="hidden" id="data" value="<%= JSON.stringify(data) %>">
+
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-8 offset-md-2">
+            <canvas id="donutChart" width="500" height="500"></canvas>
+        </div>
+    </div>
+</div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const labels = JSON.parse(document.getElementById('labels').value);
+    const data = JSON.parse(document.getElementById('data').value);
+
+    // JavaScript code to render the donut chart using Chart.js
+    const ctx = document.getElementById('donutChart').getContext('2d');
+    const donutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels ,
+            datasets: [{
+                label: 'Events by City',
+                data: data,
+                backgroundColor: [
+                    `rgba(54, 162, 235, 0.7)`, // Dark blue
+                    `rgba(255, 99, 132, 0.7)`, // Dark red
+                    `rgba(255, 206, 86, 0.7)`, // Dark yellow
+                    `rgba(75, 192, 192, 0.7)`, // Dark green
+                    `rgba(153, 102, 255, 0.7)`, // Dark purple
+                    `rgba(255, 159, 64, 0.7)` // Dark orange
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                title: {
+                    display: true,
+                    text: 'Events by City'
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

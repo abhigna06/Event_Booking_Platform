@@ -25,8 +25,8 @@ const renderProductPage = async(req,res)=>{
 const createOrder = async(req,res)=>{
     try {
 
-        
-        const amount = 100*100;
+        const { no_of_tickets, ticketPrice } = req.body;
+        const amount = (no_of_tickets * ticketPrice)/2 * 100;
         const options = {
             amount: amount,
             currency: 'INR',

@@ -106,6 +106,19 @@
                     </div>
                 <%}%>
             </div>
+
+            <input type="hidden" id="eventNames" value="<%= JSON.stringify(eventNames) %>">
+            <input type="hidden" id="ticketSales" value="<%= JSON.stringify(ticketSales) %>">
+            <br>
+            <br>
+            <br>
+
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <canvas id="ticketSalesChart"></canvas>
+                </div>
+            </div>
+
         </main>
     </div>
 </div>
@@ -113,7 +126,35 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    
+    const eventNames = JSON.parse(document.getElementById('eventNames').value);
+    const ticketSalesData = JSON.parse(document.getElementById('ticketSales').value);
 
+   
+    const ctx = document.getElementById('ticketSalesChart').getContext('2d');
+    const ticketSalesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: eventNames, // Event names
+            datasets: [{
+                label: 'Ticket Sales',
+                data: ticketSalesData, // Ticket sales data
+                backgroundColor: 'rgba(54, 162, 235, 1)', // Blue color
+                borderColor: 'rgba(54, 162, 235, 1.5)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true // Start y-axis from 0
+                }
+            }
+        }
+    });
+</script>
 </body>
 </html>
 

@@ -1,22 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- <%- include('./partials/userHeader.ejs')%>  -->
+  <%- include('./partials/userHeader.ejs')%> 
+  
+    
   <style>
-    .login-page-navigation {
-        font-size: medium;
-        float: right;
-        margin: 2% 7% 0% -3%;
+
+    body {
+      background-color: #f5f5f5;
+      position: relative;
+      
+    }   
+
+    body::before {
+      content: "";
+      background-image: url("/images/event.jpeg")  ;
+      background-size:cover;
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: -1;
     }
-  </style>
+
+    .content {
+      color: #333;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+</style>
+  
 </head>
 <body style="background-color: #eee;">
+  <div style="height: 180px;">
+  </div>
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-4"></div>
           <div class="col-sm-4">
-            <h1>Add Admin&emsp;            
+            <!-- <h1>Add Admin&emsp;             -->
             </h1>
           </div>
         </div>
@@ -24,6 +52,7 @@
     </section>
 
     <!-- Main content -->
+    
     <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -35,9 +64,14 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
+              
               <form method="post" action="/admins/sendCredentials" id="form1">
+
                 <div class="card-body"> 
+                  <p id="error-msg"></p>
+
                   <div class="form-group">
+
                     <label for="exampleInputname">ADMIN NAME</label>
                     <input type="text" class="form-control" id="name" placeholder="Enter User Name" name="name" required>
                   </div>
@@ -81,13 +115,41 @@
 <script src="/javascripts/demo.js"></script>
 <!-- Page specific script -->
 
-<!-- <script>
-$(function () {
-  bsCustomFileInput.init();
-}); 
-</script> -->
 
 
+<script>
+  $("#form1").submit(function (e) {
+    e.preventDefault();
+    let userId = $('#userId').val();
+    let data = $("#form1").serializeArray();
+    
+    $.ajax({
+      url: '/admins/sendCredentials',
+      method: 'post',
+      dataType: 'json',
+      data: data,
+      success: function (response) {
+        console.log(response)
+
+        if (response.result == 'existing-admin') {
+          var existing = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                  '</button>'+
+                '</div>'
+          $('#error-msg').html(existing)
+        }
+        else if (response.result == 'success') {
+          var success1 = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.msg+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                  '</button>'+
+                '</div>'
+          $('#error-msg').html(success1);
+          
+        }
+        
+      }
+    })
+  });
+              
+</script>
 
 </body>
 </html>

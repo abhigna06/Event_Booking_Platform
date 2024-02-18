@@ -47,7 +47,14 @@ async function sendCredentials (req, res){
           phone_no: req.body.phno,
           password: hashedPassword
       });
-
+      console.log(req.body.email);
+      existingAdmin = await Admin.find({admin_email: req.body.email});
+      if(existingAdmin.length !==0){
+        res.json({
+          result: 'existing-admin', msg:'Admin with this email id already exists' 
+        })
+      }
+      else{
       // Save the new user to the database
       await newAdmin.save();
 
@@ -75,8 +82,12 @@ async function sendCredentials (req, res){
               
           }
       });
-
-      res.status(200).send('Admin credentials sent successfully');
+      
+      res.json({
+        result:'success', msg:'Admin credentials sent successfully'
+      })
+      //res.status(200).send('Admin credentials sent successfully');
+    }
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
@@ -115,7 +126,10 @@ async function deleteAdmin(req, res) {
     else{
     // Delete the admin from the database
     await Admin.findByIdAndDelete(adminId);
-    res.status(200).json({ message: 'Admin deleted successfully' });
+    res.json({
+      result:'success', msg:'Admin deleted successfully'
+    })
+    //res.status(200).json({ message: 'Admin deleted successfully' });
     }
   } catch (error) {
     console.error('Error deleting admin:', error);

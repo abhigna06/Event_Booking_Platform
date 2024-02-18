@@ -1,77 +1,67 @@
-const sinon = require('sinon');
 const { expect } = require('chai');
-const request = require('supertest');
-const app = require('../app');
-const User = require('../models/User');
+const sinon = require('sinon');
+const User = require('../models/User'); // Assuming this is the User model
+const bcrypt = require('bcryptjs'); // Assuming you're using bcrypt for password hashing
+const userLoginController = require('../controllers/userLoginController');
 
-describe('POST /users/newuser', () => {
-    afterEach(() => {
-        sinon.restore();
-    });
+describe('User Login Controller - New User', () => {
+  let req, res, next;
 
-    it('should return 200 and redirect to login page for valid registration data', (done) => {
-        const saveStub = sinon.stub(User.prototype, 'save').resolves({});
+  beforeEach(() => {
+    req = {
+      body: {
+        name: 'Test User',
+        email: 'test@example.com',
+        password: 'password',
+        password1: 'password'
+      }
+    };
+    res = {
+      json: sinon.spy(),
+      status: sinon.stub().returns({ json: sinon.spy() })
+    };
+    next = sinon.spy();
+  });
 
-        const userData = {
-            name: 'Test User',
-            email: 'test@example.com',
-            password: 'password',
-            password1: 'password'
-        };
+  afterEach(() => {
+    sinon.restore();
+  });
 
-        request(app)
-            .post('/users/newuser')
-            .send(userData)
-            .expect(200)
-            .end((err, res) => {
-                if (err) return done(err);
-                expect(res.body.result).to.equal('redirect');
-                expect(res.body.url).to.equal('/users/login');
-                done();
-            });
-    });
+  it('should create a new user successfully', async () => {
+    // Mocking User.find to return empty array, simulating user does not exist
+    sinon.stub(User, 'find').resolves([]);
 
-    // it('should return an error if user with the same email already exists', (done) => {
-    //     sinon.stub(User, 'find').resolves([{ email: 'existing@example.com' }]);
+    // Mocking bcrypt.hashSync to return hashed password
+    sinon.stub(bcrypt, 'hashSync').returns('hashedPassword');
 
-    //     const userData = {
-    //         name: 'Test User',
-    //         email: 'existing1@example.com',
-    //         password: 'password',
-    //         password1: 'password'
-    //     };
+    // Mocking User.save to return saved user
+    sinon.stub(User.prototype, 'save').resolves({ _id: 'user_id' });
 
-    //     request(app)
-    //         .post('/users/newuser')
-    //         .send(userData)
-    //         .expect(200)
-    //         .end((err, res) => {
-    //             if (err) return done(err);
-    //             expect(res.body.result).to.equal('existing user');
-    //             expect(res.body.msg).to.equal('User with this email id already exists. Try to login');
-    //             done();
-    //         });
-    // });
+    await userLoginController.newuser(req, res, next);
 
-    // it('should return an error if passwords do not match', (done) => {
-    //     const userData = {
-    //         name: 'Test User',
-    //         email: 'test2@example.com',
-    //         password: 'password',
-    //         password1: 'differentpassword'
-    //     };
+    expect(res.json.calledOnce).to.be.true;
+    expect(res.json.calledWith({ result: 'redirect', url: '/users/login' })).to.be.true;
+  });
 
-    //     request(app)
-    //         .post('/users/newuser')
-    //         .send(userData)
-    //         .expect(200)
-    //         .end((err, res) => {
-    //             if (err) return done(err);
-    //             expect(res.body.result).to.equal('passwords doesnot match');
-    //             expect(res.body.msg).to.equal('Enter Correct Password');
-    //             done();
-    //         });
-    // });
+//   it('should return "existing user" if user with same email exists', async function() {
+//    // sinon.stub(User, 'find').resolves([{ email: 'test@example.com' , save: sinon.stub()}]);
+//     // Mocking User.find to return array with one item, simulating user exists
+//     sinon.stub(User, 'find').resolves([{ email: 'test@example.com' }]);
+//     req.body.email = 'test@example.com';
+//     await userLoginController.newuser(req, res, next);
 
+//     expect(res.json.calledOnce).to.be.true;
+//     expect(res.json.calledWithMatch({ result: 'existing user', msg:'User with this email id already exists. Try to login' })).to.be.true;
+//   });
+
+//   it('should return "passwords does not match" if passwords do not match', async () => {
     
+//     req.body.password1 = 'differentpassword';
+
+//     await userLoginController.newuser(req, res, next);
+
+//     expect(res.json.calledOnce).to.be.true;
+//     expect(res.json.calledWithMatch({ result: 'passwords doesnot match', msg:'Enter Correct Password' })).to.be.true;
+//   })
+
 });

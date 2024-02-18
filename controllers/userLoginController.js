@@ -9,7 +9,7 @@ const session = require('express-session');
 router.use(express.static("./public"));
 
 const { check, validationResult } = require('express-validator');
-const { gettingUserDetails, newUserDB } = require('../models/userLoginModels');
+const { gettingUserDetails } = require('../models/userLoginModels');
 const { getAvailableTicketsFromDatabase, updateTicketCountInDatabase } = require('../models/TicketCount');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
@@ -142,7 +142,7 @@ console.log("entered signup");
       res.json({
         result: 'redirect', url:'/users/login'
       })
-      res.render('login');
+     // res.render('login');
   } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Unexpected Error Occurred' });

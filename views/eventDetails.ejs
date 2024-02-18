@@ -62,7 +62,7 @@
                 <p><strong style="font-size: large;">Location:</strong> <%= event[0].event_location.venue%>, <%= event[0].event_location.area%>, <%= event[0].event_location.city%></p>
                 <p><strong style="font-size: large;">Available Tickets:</strong> <%= event[0].no_of_tickets%> </p>
                 <% if(event[0].ticketPrice>0){%>
-                <p><strong style="font-size: large;">Ticket Price:</strong> <%= event[0].ticketPrice%>  </p>
+                <p><strong style="font-size: large;">Ticket Price:</strong> <%= event[0].ticketPrice%> (<i>Pay half the amount in advance to confirm booking</i>) </p>
                 <%}%>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-book" data-toggle="modal" data-target="#bookingModal">
@@ -92,7 +92,7 @@
                       <div class="modal-footer">
                         <p id="confirmation-message"></p>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" id="confirmBooking" class="btn btn-primary" name="confirmBooking">Confirm</button>
+                        <button type="submit" id="confirmBooking" class="btn btn-primary" name="confirmBooking">Pay now</button>
                       </div>
                       </form>
                       </div>
@@ -122,16 +122,19 @@
           var tickets = $('#no_of_tickets').val();
           var formData = $(this).serialize();
           var eventId = $('#eventId').val();
+          var ticketPrice = $('#ticketPrice').val();
+          console.log(ticketPrice);
 
           $.ajax({
             url:"/payment/createOrder",
             type:"post",
-            data: { no_of_tickets: tickets },
+            data: { no_of_tickets: tickets, ticketPrice:ticketPrice },
             success:function(res){
+              //console.log(data.price);
               if(res.success){
                 var options = {
                   "key": ""+res.key_id+"",
-                  "amount": ""+res.amount+"",
+                  "amount": ticketPrice,
                   "currency": "INR",
                   "name": ""+res.product_name+"",
                   "description": ""+res.description+"",

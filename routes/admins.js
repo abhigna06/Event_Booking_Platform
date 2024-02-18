@@ -10,7 +10,7 @@ const passwordGenerator = require('password-generator');
 //const dotenv = require('dotenv').config();
 
 const {adminLogin, adminValidate, adminLogout} = require('../controllers/adminLoginController');
-const { adminDashboard, postEvent, newEvent, adminEvents, settings, updateProfile } = require('../controllers/adminActionController')
+const { adminDashboard, postEvent, newEvent, adminEvents, settings, updateProfile, cityChart } = require('../controllers/adminActionController')
 
 const {adminUpdateEventCompletionStatusMiddleware} = require('../middlewares/EventCompletion');
 const { deleteFile,
@@ -81,6 +81,8 @@ router.get('/delete/:id', verifyToken, deleteAdmin);
 router.get('/settings/:adminId', verifyToken, settings);
 
 router.post('/updateProfile/:adminId', verifyToken, updateProfile );
+
+router.get('/cityChart', verifyToken, cityChart )
 
 router.get('/logout', adminLogout);
 

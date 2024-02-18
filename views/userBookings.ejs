@@ -186,7 +186,7 @@
                             <div class="event-location"><%= event.event_location.venue %>, <%= event.event_location.area %>, <%= event.event_location.city %></div>
                             <div class="event-date"><%= new Date(event.date).toLocaleDateString() %> at <%= event.time %></div>
                             <div class="tickets-booked"><%= booking.ticketsCount %>  ticket(s)</div>
-                            <input type="hidden" class="event-id"  value="<%= event._id %>">
+                            <input type="hidden" class="event-id"  value="<%= booking._id %>">
 
                         </div>
                     </div>

@@ -32,15 +32,15 @@ const eventSchema = new mongoose.Schema({
 
 // eventSchema.pre('save', eventMiddleware.setCompletedFlag);
 
-eventSchema.pre('save', function(next) {
-    const currentDate = new Date();
-    if (this.date < currentDate) {
-        this.completed = true;
-    } else {
-        this.completed = false;
-    }
-    next();
-});
+// eventSchema.pre('save', function(next) {
+//     const currentDate = new Date();
+//     if (this.date < currentDate) {
+//         this.completed = true;
+//     } else {
+//         this.completed = false;
+//     }
+//     next();
+// });
 
 
 const Event = mongoose.model('events', eventSchema);
