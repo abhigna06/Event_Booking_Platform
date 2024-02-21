@@ -43,7 +43,7 @@ describe('Update Profile Function', () => {
   it('should handle wrong current password', async () => {
     const user = { email: 'test@example.com', password: await bcrypt.hash('other_password', 10) };
     sinon.stub(User, 'find').resolves([user]);
-    sinon.stub(bcrypt, 'compare').resolves(false);
+    //sinon.stub(bcrypt, 'compare').resolves(false);
 
     await userActionController.updateProfile(req, res, next);
 
@@ -54,7 +54,7 @@ describe('Update Profile Function', () => {
   it('should handle passwords not matching', async () => {
     const user = { email: 'test@example.com', password: await bcrypt.hash('current_password', 10) };
     sinon.stub(User, 'find').resolves([user]);
-    sinon.stub(bcrypt, 'compare').resolves(true);
+    //sinon.stub(bcrypt, 'compare').resolves(true);
 
     req.body.confirmPassword = 'different_password';
 

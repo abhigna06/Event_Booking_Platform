@@ -4,6 +4,29 @@ const User = require('../models/User'); // Assuming this is the User model
 const bcrypt = require('bcryptjs'); // Assuming you're using bcrypt for password hashing
 const userLoginController = require('../controllers/userLoginController');
 
+
+describe('Sign Up Controller', () => {
+  it('should render the register view', async () => {
+     
+      const res = {
+          render: sinon.spy() // Spy on the render method
+      };
+
+      const req = {};
+
+      const next = sinon.spy();
+
+      // Call the login function
+      await userLoginController.register(req, res, next);
+
+      expect(res.render.calledOnce).to.be.true;
+      expect(res.render.firstCall.args[0]).to.equal('register');
+
+      expect(next.called).to.be.false;
+  });
+});
+
+
 describe('User Login Controller - New User', () => {
   let req, res, next;
 
