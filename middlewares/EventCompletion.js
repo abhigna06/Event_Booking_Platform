@@ -69,7 +69,7 @@ const adminUpdateEventCompletionStatusMiddleware = async (req, res, next) => {
             for (const event of events) {
                 const eventDate = new Date(event.date);
                 const eventTimeParts = event.time.split(':');
-                const eventHour = parseInt(eventTimeParts[0], 10);
+                let eventHour = parseInt(eventTimeParts[0], 10);
                 const eventMinute = parseInt(eventTimeParts[1], 10);
                 const eventAmPm = event.time.split(' ')[1];
                 if (eventAmPm === 'PM' && eventHour !== 12) {
