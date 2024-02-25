@@ -98,9 +98,11 @@ catch(e){
 }
 
 async function newuser (req, res, next){
+try{
 console.log(req.body);
 console.log("entered signup");
   const { name, email, password, password1 } = req.body;
+  const hashedPassword = bcrypt.hashSync(password, 10);
 
   console.log(req.body);
 
@@ -118,9 +120,7 @@ console.log("entered signup");
     })
   }
 
-  const hashedPassword = bcrypt.hashSync(password, 10);
-
-  try {
+  else {
       const user = new User({ name, email, password: hashedPassword });
       const savedUser = await user.save();
 
@@ -132,7 +132,8 @@ console.log("entered signup");
         result: 'redirect', url:'/users/login'
       })
      // res.render('login');
-  } catch (err) {
+  } 
+}catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Unexpected Error Occurred' });
   }
