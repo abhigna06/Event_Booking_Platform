@@ -112,7 +112,7 @@ console.log("entered signup");
     })
   }
   
-  if(password1 !== password){
+  else if(password1 !== password){
     res.json({
       result: 'passwords doesnot match', msg:'Enter Correct Password'
     })
