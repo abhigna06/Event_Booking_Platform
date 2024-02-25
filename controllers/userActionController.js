@@ -43,33 +43,59 @@ async function userHome(req, res, next){
 }
 
 async function searchEvents (req, res) {
-    try {
-        const { searchTerm } = req.query;
-        //console.log(searchTerm);
-        console.log(req.query);
+    // try {
+    //     const { searchTerm } = req.query;
+    //     //console.log(searchTerm);
+    //     console.log(req.query);
   
-        // Construct the case-insensitive search term
-        const regex = new RegExp(searchTerm, 'i');
-        const currentDate = new Date();
-        // Perform search using $match stage
-      const events = await Event.aggregate([
-        {
-          $match: {
-            $or: [
-              { "event_name": { $regex: regex } }, // Case-insensitive partial string match for event name
-              { "host": { $regex: regex } } // Case-insensitive partial string match for host
-            ],
-            $and: [{"date" : {$gte: currentDate}}],
+    //     //case-insensitive search term
+    //     const regex = new RegExp(searchTerm, 'i');
+    //     const currentDate = new Date();
+        
+    //   const events = await Event.aggregate([
+    //     {
+    //       $match: {
+    //         $or: [
+    //           { "event_name": { $regex: regex } }, 
+    //           { "host": { $regex: regex } } 
+    //         ],
+    //         $and: [{"date" : {$gte: currentDate}}],
+    //       }
+    //     }
+    //   ]);
+
+    //     console.log(events);
+    //     res.json(events);
+    // } catch (error) {
+    //     console.error(error);
+    //     res.status(500).json({ message: 'Internal Server Error' });
+    // }
+    const { searchTerm } = req.query;
+    const searchQuery = [
+      {
+        $search: {
+          index: "searchEvents",
+          text: {
+            query: searchTerm,
+            path: {
+              wildcard: "*"
+            }
           }
         }
-      ]);
+      }
+    ];
 
-        console.log(events);
-        res.json(events);
-    } catch (error) {
+    Event.aggregate(searchQuery)
+      .then(results => {
+        // Process the search results
+        console.log(results);
+        // Send the results to the client or perform any other operation
+        res.json(results);
+      })
+      .catch(error => {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
-    }
+      });
 }
 
 async function filterEventsByDate(req, res){
@@ -80,7 +106,7 @@ async function filterEventsByDate(req, res){
       const start = new Date(startDate);
       const end = new Date(endDate);
       // Query events within the date range
-      const filteredEvents = await Event.find({ date: { $gte: start, $lte: end } });
+      const filteredEvents = await Event.find({ date: { $gte: start, $lte: end }, completed: false });
       res.json(filteredEvents);
       } catch (error) {
           console.error(error);
@@ -167,7 +193,7 @@ async function userBookings(req, res, next) {
       //   path: 'bookings.eventId',
       //   match: { completed: false } // Filter only upcoming events
       // });
-      console.log(user[0].bookings);
+      //console.log(user[0].bookings);
       res.render('userBookings', { user: user});
     }
     catch(e){

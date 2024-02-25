@@ -55,10 +55,10 @@ async function sendCredentials (req, res){
         })
       }
       else{
-      // Save the new user to the database
+      // Save the new admin to the database
       await newAdmin.save();
 
-      // Send email with user's credentials
+      // Send email with admin's credentials
       const transporter = nodemailer.createTransport({
           service: 'hotmail',
           auth: {

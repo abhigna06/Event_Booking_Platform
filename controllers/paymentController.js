@@ -10,17 +10,17 @@ const razorpayInstance = new Razorpay({
     key_secret: RAZORPAY_SECRET_KEY
 });
 
-const renderProductPage = async(req,res)=>{
+// const renderProductPage = async(req,res)=>{
 
-    try {
+//     try {
         
-        res.render('product');
+//         res.render('product');
 
-    } catch (error) {
-        console.log(error.message);
-    }
+//     } catch (error) {
+//         console.log(error.message);
+//     }
 
-}
+// }
 
 const createOrder = async(req,res)=>{
     try {
@@ -61,44 +61,42 @@ const createOrder = async(req,res)=>{
     }
 }
 
-const handlePaymentSuccess = async (req, res) => {
+// const handlePaymentSuccess = async (req, res) => {
 
-    try {
-        console.log(req.user);
-        const { eventId, amount, ticketsCount } = req.body;
+//     try {
+//         console.log(req.user);
+//         const { eventId, amount, ticketsCount } = req.body;
 
-        // Update the number of available tickets in the event
-        const event = await Event.findById(eventId);
-        if (!event) {
-            return res.status(404).json({ success: false, message: 'Event not found' });
-        }
+//         // Update the number of available tickets in the event
+//         const event = await Event.findById(eventId);
+//         if (!event) {
+//             return res.status(404).json({ success: false, message: 'Event not found' });
+//         }
 
-        if (ticketsCount > event.no_of_tickets) {
-            return res.status(400).json({ success: false, message: 'Tickets unavailable' });
-        }
+//         if (ticketsCount > event.no_of_tickets) {
+//             return res.status(400).json({ success: false, message: 'Tickets unavailable' });
+//         }
 
-        event.no_of_tickets -= ticketsCount;
-        event.ticketsSold += ticketsCount;
-        await event.save();
+//         event.no_of_tickets -= ticketsCount;
+//         event.ticketsSold += ticketsCount;
+//         await event.save();
 
-        // Update the user's booking information
-        const user_email = req.user.email;
-        const user = await User.findOne({ email: user_email });
-        user.bookings.push({ eventId, ticketsCount });
-        await user.save();
+//         // Update the user's booking information
+//         const user_email = req.user.email;
+//         const user = await User.findOne({ email: user_email });
+//         user.bookings.push({ eventId, ticketsCount });
+//         await user.save();
 
-        // Respond with success message
-        res.status(200).json({ success: true, message: 'Booking successful' });
-        res.render('success');
-    } catch (error) {
-        console.error('Error handling payment success:', error);
-        res.status(500).send('Internal server error');
-    }
-};
+//         // Respond with success message
+//         res.status(200).json({ success: true, message: 'Booking successful' });
+//         res.render('success');
+//     } catch (error) {
+//         console.error('Error handling payment success:', error);
+//         res.status(500).send('Internal server error');
+//     }
+// };
 
 
 module.exports = {
-    renderProductPage,
     createOrder,
-    handlePaymentSuccess,
 }

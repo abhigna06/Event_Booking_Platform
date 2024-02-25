@@ -9,11 +9,11 @@ const session = require('express-session');
 router.use(express.static("./public"));
 
 const { register, login, validate, newuser, logout, } = require('../controllers/userLoginController');
-const {userHome, searchEvents, filterEventsByDate, eventDetails, bookTickets, userBookings, cancelBooking, settings, updateProfile } = require('../controllers/userActionController');
+const {userHome, searchEvents, filterEventsByDate, eventDetails, bookTickets, userBookings ,cancelBooking, settings, updateProfile } = require('../controllers/userActionController');
 const {updateEventCompletionStatusMiddleware } = require('../middlewares/EventCompletion')
+const {scheduleNotification} = require('../controllers/notifyUsersController')
 const { check, validationResult } = require('express-validator');
 const { gettingUserDetails, newUserDB } = require('../models/userLoginModels');
-const { getAvailableTicketsFromDatabase, updateTicketCountInDatabase } = require('../models/TicketCount');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const { v4:uuidv4 } = require('uuid');
@@ -49,13 +49,15 @@ router.get('/user_home/:city?', verifyToken, userHome);
 
 router.get('/searchEvents', searchEvents);
 
-router.get('/filterEventsByDate', filterEventsByDate);
+router.get('/filterEventsByDate', updateEventCompletionStatusMiddleware, filterEventsByDate);
 
 router.get('/eventDetails/:eventId', verifyToken, eventDetails);
 
 router.post('/bookTickets/:eventId', verifyToken, bookTickets);
 
 router.get('/myBookings/:userId', verifyToken, updateEventCompletionStatusMiddleware, userBookings);
+
+router.post('/notify/:eventId', verifyToken, scheduleNotification);
 
 router.post('/cancelBooking/:eventId', verifyToken, cancelBooking);
 

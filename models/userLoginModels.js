@@ -1,4 +1,3 @@
-//database
 const User = require('./User.js');
 
 async function gettingUserDetails(val){

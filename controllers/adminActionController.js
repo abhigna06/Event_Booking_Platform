@@ -14,9 +14,9 @@ const multer = require('multer');
 //const upload = multer({ storage: storage });
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.resolve(`./public/uploads/`));
-  },
+  // destination: function (req, file, cb) {
+  //   cb(null, path.resolve(`./public/uploads/`));
+  // },
   filename: function (req, file, cb) {
     const fileName = `${Date.now()}-${file.originalname}`;
     cb(null, fileName);
@@ -106,8 +106,6 @@ async function newEvent(req, res, next) {
       const eventNames = ticketSalesData.map(data => data._id); // Array of event names
       const ticketSales = ticketSalesData.map(data => data.totalTicketsSold);
 
-      // Respond with JSON for API requests
-      // res.status(201).json({ user: savedUser });
       res.render('admin_dashboard', { admin: admin, events, allAdmins, eventNames, ticketSales  });
     } catch (err) {
       console.error(err);
@@ -132,8 +130,6 @@ async function adminEvents(req, res, next) {
 
 async function settings(req, res, next) {
     try {
-      // const userEmail = req.user.email;  
-      // const user = await User.find({email:userEmail});
       const adminId = req.params.adminId;
       const admin = await Admin.find({ _id: adminId });
   

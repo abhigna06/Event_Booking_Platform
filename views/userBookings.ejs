@@ -21,6 +21,10 @@
             background-color: #f0f4f8;
             font-size: medium;
         }
+        .btn-notify {
+            background-color: #007bff;
+            color: #ffffff;
+        }
 
         a {
             color: #ff4a17;
@@ -133,6 +137,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
  
 </head>
 <body>
@@ -194,6 +199,8 @@
                         
                         <div class="col-md-3">
                             <br>
+                            <button class="btn btn-danger notify-me-btn" data-toggle="modal" data-target="#notificationModal" style="background-color: #007bff; border-color: #007bff;">Notify me!</button>                        
+                            &nbsp;
                             <button class="btn btn-danger cancel-booking-btn" >Cancel Booking</button>
                             <!-- <p id="confirmation-message"></p> -->
                         </div>
@@ -207,7 +214,48 @@
     <% } %>
 </div>
 
-
+<!-- Modal -->
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="notificationModalLabel">Notification Options</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Select when you want to receive notifications:</p>
+          <form id="form1" >
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="notificationOption" id="notificationOption1" value="30 minutes">
+            <label class="form-check-label" for="notificationOption1">
+              30 minutes before
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="notificationOption" id="notificationOption2" value="1 hour">
+            <label class="form-check-label" for="notificationOption2">
+              1 hour before
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="notificationOption" id="notificationOption3" value="1 day">
+            <label class="form-check-label" for="notificationOption3">
+              1 day before
+            </label>
+          </div>
+          <input type="hidden" name="eventId" id="eventId">
+        </div>
+        <div class="modal-footer">
+            <p id="confirm-notify"></p>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="confirmNotificationBtn">Notify!</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
 
 
   
@@ -236,6 +284,7 @@
 
 
         $('.cancel-booking-btn').on('click', function() {
+            
             // Get the eventId from the hidden input field
             var bookingCard = $(this).closest('.booking-card');
             var eventId = bookingCard.find('.event-id').val();
@@ -276,7 +325,55 @@
                 
             });
         });
+
+        // Function to set event ID in modal when Notify button is clicked
+    $('.notify-me-btn').on('click', function(e) {
+        e.preventDefault();
+        var eventId = $(this).closest('.booking-card').data('event-id'); // Get the event ID associated with the booking
+        $('#eventId').val(eventId); // Set the event ID in the hidden input field
     });
+
+    // Function to handle Notify button click
+    $('#confirmNotificationBtn').on('click', function(e) {
+        e.preventDefault();
+        var eventId = $('#eventId').val(); // Get the event ID from the hidden input field
+        var notificationOption = $('input[name="notificationOption"]:checked').val(); // Get selected notification option
+        console.log(eventId)
+        // Make an AJAX request to send notification data to the server
+        $.ajax({
+            method: 'post',
+            url: `/users/notify/${eventId}`, // Pass the event ID in the URL
+            data: { notificationOption: notificationOption }, // Include event ID and notification option in the request data
+            success: function(response) {
+                // Handle success response
+                if (response.result =='success') {
+                    //alert("Payment Succeeded");
+                    var successmsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+response.message+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+'<span aria-hidden="true">&times;</span>'+
+                '</button>'+'</div>'
+                
+                    $('#confirm-notify').html(successmsg);
+                    $('#confirm-notify').show(); 
+                    //window.location.href = "/users/bookTickets/" + eventId;
+                    //window.location.reload();
+                } else {
+                    alert("Failed to schedule notification.");
+                }
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                console.error(error);
+            }
+        });
+        $('#confirmNotificationBtn').on('hidden.bs.modal', function (e) {
+            window.location.reload();
+        });
+    });
+});
+   
+
+    
+
 
 
 

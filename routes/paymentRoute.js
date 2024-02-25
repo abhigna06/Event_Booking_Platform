@@ -12,9 +12,9 @@ payment_route.set('views',path.join(__dirname, '../views'));
 
 const paymentController = require('../controllers/paymentController');
 
-payment_route.get('/', paymentController.renderProductPage);
+//payment_route.get('/', paymentController.renderProductPage);
 payment_route.post('/createOrder', paymentController.createOrder);
-payment_route.get('/success', paymentController.handlePaymentSuccess);
+//payment_route.get('/success', paymentController.handlePaymentSuccess);
 
 
 module.exports = payment_route;

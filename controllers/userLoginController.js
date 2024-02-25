@@ -10,7 +10,6 @@ router.use(express.static("./public"));
 
 const { check, validationResult } = require('express-validator');
 const { gettingUserDetails } = require('../models/userLoginModels');
-const { getAvailableTicketsFromDatabase, updateTicketCountInDatabase } = require('../models/TicketCount');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const { v4:uuidv4 } = require('uuid');
@@ -18,7 +17,7 @@ const { v4:uuidv4 } = require('uuid');
 const verifyToken = require('../middlewares/tokenVerification');
 
 
-const cookieMaxAge = 30000000;
+const cookieMaxAge = 300000000;
 const jwtSecret = "keyboard cat"; 
 
 router.use(cookieParser())
@@ -81,12 +80,6 @@ try{
         const token=createToken(req.body.email);
         res.cookie('jwt',token,{maxAge: cookieMaxAge, httpOnly:true});
 
-
-        //req.session.auth=true;
-        // console.log(req);
-        // req.session.uid=req.body.email;
-        // sessionStorage.setItem('auth', 'true');
-        // sessionStorage.setItem('uid', req.body.userid);
         res.json({
           result: 'redirect', url:'/users/user_home'
         })
@@ -111,11 +104,7 @@ console.log("entered signup");
 
   console.log(req.body);
 
-  // if ( !name || !email || !password || !password1 || password != password1 ) {
-      
-  //     return res.status(422).json({ message: 'Invalid inputs' });
-      
-  // }
+  
   const existingEmail = await User.find({email : email});
   if(existingEmail.length!==0){
     res.json({

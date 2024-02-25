@@ -34,19 +34,7 @@ async function uploadFileToS3(bucketName, file) {
  
  
  
- 
-function deleteFile(filePath) {
-  fs.unlink(filePath, (err) => {
-    if (err) {
-      console.error("Error deleting file:", err);
-    } else {
-      console.log("File deleted successfully.");
-    }
-  });
-}
- 
 module.exports = {
-  deleteFile,
   uploadFileToS3,
 };
  

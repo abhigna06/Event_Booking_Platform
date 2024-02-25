@@ -4,24 +4,14 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var Admin = require('../models/Admin')
 var Event = require('../models/Event')
-const session = require('express-session');
-const nodemailer = require('nodemailer');
-const passwordGenerator = require('password-generator');
-//const dotenv = require('dotenv').config();
 
-const {adminUpdateEventCompletionStatusMiddleware} = require('../middlewares/EventCompletion');
-const { deleteFile,
-  uploadFileToS3 } = require('../services/uploadToS3');
-const { addAdmin, sendCredentials, manageAdmins, deleteAdmin } = require("../controllers/mainAdminController");
 const { gettingAdminDetails } = require("../models/adminLoginModels");
 const { check, validationResult } = require('express-validator');
 
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const { v4: uuidv4 } = require('uuid');
-const { configDotenv } = require('dotenv');
 
-const cookieMaxAge = 30000000;
+const cookieMaxAge = 300000000;
 const jwtSecret = "keyboard cat";
 
 router.use(cookieParser())

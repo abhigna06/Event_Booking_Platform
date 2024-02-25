@@ -24,7 +24,7 @@ const eventSchema = new mongoose.Schema({
     eventImage: { type: String },
     no_of_tickets:{ type : Number, required: true,},
     ticketsSold: { type: Number, default:0},
-    postedBy:{ type: mongoose.Schema.Types.ObjectId, ref: Admin },
+    postedBy:{ type: mongoose.Schema.Types.ObjectId, ref: 'Admin' },
     completed: { type: Boolean, default: false },
     ticketPrice : { type: Number, default:0},
 
