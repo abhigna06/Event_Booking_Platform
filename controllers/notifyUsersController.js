@@ -76,7 +76,7 @@ function sendEmail(email, event) {
         from: process.env.OUTLOOK_USER,
         to: email,
         subject: 'Event NReminder',
-        text: `Get ready to have fun at "${event.event_name} which is scheduled on ${new Date(event.date).toLocaleDateString() } at ${event.time}. `
+        text: `Get ready to have fun at "${event.event_name}  on ${new Date(event.date).toLocaleDateString() } , ${event.time}. \n See you at ${event.event_location.venue}, ${event.event_location.area}, ${event.event_location.city}.`,
     };
 
     // Send email
