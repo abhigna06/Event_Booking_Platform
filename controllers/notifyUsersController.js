@@ -61,7 +61,8 @@ const scheduleNotification = async (req, res) => {
 };
 
 // Function to send email notification
-function sendEmail(email, event) {
+async function sendEmail(email, event) {
+    try{
     // Create nodemailer transporter
     const transporter = nodemailer.createTransport({
         service: 'hotmail',
@@ -80,7 +81,7 @@ function sendEmail(email, event) {
     };
 
     // Send email
-    transporter.sendMail(mailOptions, (error, info) => {
+    await transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.error('Error sending email:', error);
         } else {
@@ -88,6 +89,13 @@ function sendEmail(email, event) {
         }
     });
 }
+
+catch(e){
+    console.log(e);
+}
+}
+
+
 
 module.exports = {
     scheduleNotification
