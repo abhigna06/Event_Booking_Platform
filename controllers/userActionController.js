@@ -13,13 +13,13 @@ async function userHome(req, res, next){
     try{
       const currentDate = new Date();
   
-      let events = await Event.find();
-      for(let i=0;i<events.length;i++){
-        if(events[i].date < currentDate){
-          events[i].completed = true;
-        }
-      }
-      console.log(events);
+       let events;
+      // for(let i=0;i<events.length;i++){
+      //   if(events[i].date < currentDate){
+      //     events[i].completed = true;
+      //   }
+      // }
+      // console.log(events);
       // const cities = [...new Set(events.map(event => event.event_location.city))]; 
       const cities = await Event.distinct("event_location.city");
       const userEmail = req.user.email;  
@@ -82,6 +82,9 @@ async function searchEvents (req, res) {
             }
           }
         }
+      },
+      {
+        $match:{"completed" : false }
       }
     ];
 

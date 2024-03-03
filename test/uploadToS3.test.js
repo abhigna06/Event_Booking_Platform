@@ -2,13 +2,17 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 
 const { uploadFileToS3 } = require('../services/uploadToS3');
-const region = "testRegion";
+
+afterEach(()=>{
+    sinon.restore();
+})
 
 describe('uploadFileToS3', () => {
 
     it('should upload file successfully', async () => {
         const bucketName = 'testBucket';
         const file = { path: '/path/to/file.txt' };
+        const region = "testRegion";
         const uploadSpy = sinon.stub().resolves({ Location: 'https://testBucket.s3.amazonaws.com/file123.txt' });
         const s3Client = { send: uploadSpy };
 
@@ -21,6 +25,7 @@ describe('uploadFileToS3', () => {
     it('should handle upload error', async () => {
         const bucketName = 'testBucket';
         const file = { path: '/path/to/file.txt' };
+        const region = "testRegion";
         const uploadSpy = sinon.stub().rejects(new Error('Failed to upload'));
         const s3Client = { send: uploadSpy };
 
