@@ -85,7 +85,7 @@ async function sendEmail(email, event) {
         if (error) {
             console.error('Error sending email:', error);
         } else {
-            console.log('Email sent:', info.response);
+            console.log('Email sent:', email,info.response);
         }
     });
 }

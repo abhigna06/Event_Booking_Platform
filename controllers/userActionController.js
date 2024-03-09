@@ -12,7 +12,7 @@ const { check, validationResult } = require('express-validator');
 async function userHome(req, res, next){
     try{
       const currentDate = new Date();
-  
+      console.log(currentDate);
        let events;
       // for(let i=0;i<events.length;i++){
       //   if(events[i].date < currentDate){
@@ -24,18 +24,19 @@ async function userHome(req, res, next){
       const cities = await Event.distinct("event_location.city");
       const userEmail = req.user.email;  
       const user = await User.find({email:userEmail});
+      var city;
       console.log(user);
      // console.log(user[0].name);
   
      if(req.params.city) {
       // If city parameter is provided, filter events by city
-        const city = req.params.city;
-        events = await Event.find({'event_location.city' : city, completed:false});
+        city = req.params.city;
+        events = await Event.find({'event_location.city' : city, date: { $gte: currentDate}, completed:false});
       } else {
         // If no city parameter provided, fetch all events after current date
-        events = await Event.find( {completed: false});
+        events = await Event.find( {date: { $gte: currentDate}, completed: false});
       }
-      res.render('user_home', { title: 'Events', events : events , cities:cities, user});
+      res.render('user_home', { title: 'Events', events : events , cities:cities, user, city});
     }
     catch(e){
       console.log(e)
@@ -70,8 +71,10 @@ async function searchEvents (req, res) {
     //     console.error(error);
     //     res.status(500).json({ message: 'Internal Server Error' });
     // }
+    const currentDate = new Date();
     const { searchTerm } = req.query;
     const searchQuery = [
+      
       {
         $search: {
           index: "searchEvents",
@@ -84,8 +87,9 @@ async function searchEvents (req, res) {
         }
       },
       {
-        $match:{"completed" : false }
+        $match:{date: { $gte: currentDate}, completed : false }
       }
+      
     ];
 
     Event.aggregate(searchQuery)
@@ -105,6 +109,7 @@ async function filterEventsByDate(req, res){
   
     try {
       const { startDate, endDate } = req.query;
+      console.log(startDate);
       // Convert start and end dates to JavaScript Date objects
       const start = new Date(startDate);
       const end = new Date(endDate);

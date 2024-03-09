@@ -47,7 +47,7 @@ router.post('/newuser', newuser);
 
 router.get('/user_home/:city?', verifyToken, updateEventCompletionStatusMiddleware, userHome);
 
-router.get('/searchEvents',updateEventCompletionStatusMiddleware, searchEvents);
+router.get('/searchEvents', verifyToken, updateEventCompletionStatusMiddleware, searchEvents);
 
 router.get('/filterEventsByDate', updateEventCompletionStatusMiddleware, filterEventsByDate);
 

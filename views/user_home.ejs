@@ -178,6 +178,11 @@
         font-size: 16px;
     }
 
+    .list-group-item:hover {
+        color: #ff4a17;
+        
+    }
+
     input[type="date"]:not(.has-value):before{
         color: black;
         content: attr(placeholder);
@@ -209,7 +214,10 @@
             <div class="dropdown">
                 <button class="btn btn-secondary  dropdown-toggle" type="button" id="cityDropdown" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"  style="background-color: #5c8eb0;">
-                    Select City
+                    <!-- Select City -->
+                    <span id="selectedCity">
+                        Select City
+                    </span>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="cityDropdown">
                     <% cities.forEach(city => { %>
@@ -276,6 +284,11 @@
         <br>
 
         <div class="container" style="font-family: Poppins, sans-serif; color: #263D4D;"><h3><b> Explore Events </b></h3><br>
+            
+                <% if(events.length === 0){ %>
+                    <p> Oh no! There are currently no events!! Come back later!</p>
+                <% } %>
+            
             <div class="container d-flex justify-content-between flex-wrap" id="eventsContainer">
                 <% for (let i = 0; i < events.length; i++) { %>
                     <div class="card mb-3" style="width: 18rem; background-color: #ffffff;">
@@ -307,6 +320,31 @@
         //     $('#cityDropdown').text(selectedCity);
         // });
         // });
+        var selectedCity = localStorage.getItem('selectedCity');
+        if (selectedCity) {
+            $('#selectedCity').text(selectedCity);
+        }
+
+
+        $('.dropdown-menu a').click(function(){
+            var city = $(this).text();
+            $('#selectedCity').text($(this).text());
+            localStorage.setItem('selectedCity', city);
+        });
+
+        // let dropdownButton = document.getElementById("cityDropdown");
+        // let selectedCitySpan = document.getElementById("selectedCity");
+        // let dropdownLinks = document.querySelectorAll(".dropdown-item");
+
+        // dropdownLinks.forEach(function (link) {
+        //     link.addEventListener("click", function () {
+        //         let selectedCity = this.dataset.city;
+        //         selectedCitySpan.innerHTML = selectedCity; 
+        //         // dropdownButton.innerHTML = selectedCity;
+        //     });
+        // });
+        
+        localStorage.removeItem('selectedCity');
         const today = new Date();
 
         // Format the date to YYYY-MM-DD
