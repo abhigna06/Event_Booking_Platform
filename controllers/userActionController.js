@@ -44,65 +44,65 @@ async function userHome(req, res, next){
 }
 
 async function searchEvents (req, res) {
-    // try {
-    //     const { searchTerm } = req.query;
-    //     //console.log(searchTerm);
-    //     console.log(req.query);
+    try {
+        const { searchTerm } = req.query;
+        //console.log(searchTerm);
+        console.log(req.query);
   
-    //     //case-insensitive search term
-    //     const regex = new RegExp(searchTerm, 'i');
-    //     const currentDate = new Date();
+        //case-insensitive search term
+        const regex = new RegExp(searchTerm, 'i');
+        const currentDate = new Date();
         
-    //   const events = await Event.aggregate([
-    //     {
-    //       $match: {
-    //         $or: [
-    //           { "event_name": { $regex: regex } }, 
-    //           { "host": { $regex: regex } } 
-    //         ],
-    //         $and: [{"date" : {$gte: currentDate}}],
-    //       }
-    //     }
-    //   ]);
-
-    //     console.log(events);
-    //     res.json(events);
-    // } catch (error) {
-    //     console.error(error);
-    //     res.status(500).json({ message: 'Internal Server Error' });
-    // }
-    const currentDate = new Date();
-    const { searchTerm } = req.query;
-    const searchQuery = [
-      
-      {
-        $search: {
-          index: "searchEvents",
-          text: {
-            query: searchTerm,
-            path: {
-              wildcard: "*"
-            }
+      const events = await Event.aggregate([
+        {
+          $match: {
+            $or: [
+              { "event_name": { $regex: regex } }, 
+              { "host": { $regex: regex } } 
+            ],
+            $and: [{"date" : {$gte: currentDate}}],
           }
         }
-      },
-      {
-        $match:{date: { $gte: currentDate}, completed : false }
-      }
-      
-    ];
+      ]);
 
-    Event.aggregate(searchQuery)
-      .then(results => {
-        // Process the search results
-        console.log(results);
-        // Send the results to the client or perform any other operation
-        res.json(results);
-      })
-      .catch(error => {
+        console.log(events);
+        res.json(events);
+    } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
-      });
+    }
+    // const currentDate = new Date();
+    // const { searchTerm } = req.query;
+    // const searchQuery = [
+      
+    //   {
+    //     $search: {
+    //       index: "searchEvents",
+    //       text: {
+    //         query: searchTerm,
+    //         path: {
+    //           wildcard: "*"
+    //         }
+    //       }
+    //     }
+    //   },
+    //   {
+    //     $match:{date: { $gte: currentDate}, completed : false }
+    //   }
+      
+    // ];
+
+    // Event.aggregate(searchQuery)
+    //   .then(results => {
+    //     // Process the search results
+    //     console.log(results);
+    //     // Send the results to the client or perform any other operation
+    //     res.json(results);
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //     res.status(500).json({ message: 'Internal Server Error' });
+    //   });
 }
 
 async function filterEventsByDate(req, res){

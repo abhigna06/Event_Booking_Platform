@@ -362,10 +362,12 @@
         document.getElementById('searchInput').addEventListener('input', async function() {
             try {
                 const searchTerm = this.value.trim();
+                $('#selectedCity').text('Select City');
                 if (searchTerm !== '') {
                     // Send AJAX request to searchEvents route
                     const response = await fetch(`/users/searchEvents?searchTerm=${searchTerm}`);
                     const events = await response.json();
+                    
                     // Update events container with search results
                     updateEventsContainer(events);
                 }
@@ -378,6 +380,7 @@
         event.preventDefault();
         try {
             const searchTerm = document.getElementById('searchInput').value.trim();
+            $('#selectedCity').text('Select City');
             if (searchTerm !== '') {
                 // Send AJAX request to searchEvents route
                 const response = await fetch(`/users/searchEvents?searchTerm=${searchTerm}`);
@@ -397,6 +400,7 @@
         document.getElementById('searchByDateRangeBtn').addEventListener('click', async function(event) {
             event.preventDefault();
             try {
+                $('#selectedCity').text('Select City');
                 const startDate = document.getElementById('startDate').value;
                 const endDate = document.getElementById('endDate').value;
                 if (startDate && endDate) {
